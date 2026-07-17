@@ -10,5 +10,5 @@ route:
 receivers:
   - name: local-webhook
     webhook_configs:
-      - url: http://alert-receiver:5001/alerts
+      - url: http://sit223-alert-receiver:5001/alerts
         send_resolved: true
