@@ -1,0 +1,12 @@
+groups:
+  - name: taskmanager-alerts
+    rules:
+      - alert: TaskManagerDown
+        expr: up{job="sit223-taskmanager"} == 0
+        for: 15s
+        labels:
+          severity: critical
+          service: sit223-taskmanager
+        annotations:
+          summary: Task Manager production service is down
+          description: Prometheus could not scrape the production application for 15 seconds.
