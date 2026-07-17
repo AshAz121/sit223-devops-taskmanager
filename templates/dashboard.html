@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | DevOps Task Manager{% endblock %}
+
+{% block content %}
+<section class="dashboard-heading">
+    <div>
+        <p class="eyebrow">Project dashboard</p>
+        <h1>Your task workspace</h1>
+        <p class="muted">
+            Add work items, update their content and track completion.
+        </p>
+    </div>
+
+    <div class="summary-card">
+        <strong>{{ completed_count }}</strong>
+        <span>of {{ tasks|length }} tasks completed</span>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Add a new task</h2>
+
+    <form method="post" action="{{ url_for('add_task') }}" class="task-form">
+        <div>
+            <label for="title">Task title</label>
+            <input
+                id="title"
+                name="title"
+                type="text"
+                maxlength="120"
+                placeholder="For example: Complete Jenkins build stage"
+                required
+            >
+        </div>
+
+        <div>
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                maxlength="500"
+                rows="3"
+                placeholder="Add any useful details here"
+            ></textarea>
+        </div>
+
+        <button class="button primary" type="submit">Add task</button>
+    </form>
+</section>
+
+<section class="task-section">
+    <div class="section-heading">
+        <h2>Current tasks</h2>
+        <span>{{ tasks|length }} total</span>
+    </div>
+
+    {% if tasks %}
+        <div class="task-grid">
+            {% for task in tasks %}
+                <article class="task-card {% if task['completed'] %}completed{% endif %}">
+                    <div class="task-top">
+                        <div>
+                            <span class="status-badge">
+                                {% if task['completed'] %}
+                                    Completed
+                                {% else %}
+                                    In progress
+                                {% endif %}
+                            </span>
+
+                            <h3>{{ task['title'] }}</h3>
+                        </div>
+
+                        <form
+                            method="post"
+                            action="{{ url_for('toggle_task', task_id=task['id']) }}"
+                        >
+                            <button class="button secondary small" type="submit">
+                                {% if task['completed'] %}
+                                    Reopen
+                                {% else %}
+                                    Complete
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+
+                    {% if task['description'] %}
+                        <p>{{ task['description'] }}</p>
+                    {% endif %}
+
+                    <details>
+                        <summary>Edit task</summary>
+
+                        <form
+                            method="post"
+                            action="{{ url_for('edit_task', task_id=task['id']) }}"
+                            class="edit-form"
+                        >
+                            <label for="title-{{ task['id'] }}">Title</label>
+                            <input
+                                id="title-{{ task['id'] }}"
+                                name="title"
+                                value="{{ task['title'] }}"
+                                maxlength="120"
+                                required
+                            >
+
+                            <label for="description-{{ task['id'] }}">
+                                Description
+                            </label>
+                            <textarea
+                                id="description-{{ task['id'] }}"
+                                name="description"
+                                maxlength="500"
+                                rows="3"
+                            >{{ task['description'] }}</textarea>
+
+                            <button class="button secondary small" type="submit">
+                                Save changes
+                            </button>
+                        </form>
+                    </details>
+
+                    <div class="task-footer">
+                        <small>Created {{ task['created_at'] }}</small>
+
+                        <form
+                            method="post"
+                            action="{{ url_for('delete_task', task_id=task['id']) }}"
+                        >
+                            <button class="button danger small" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No tasks have been added yet</h3>
+            <p>Your first task will appear here after you submit the form.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

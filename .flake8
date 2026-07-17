@@ -1,0 +1,10 @@
+[flake8]
+max-line-length = 100
+max-complexity = 15
+exclude =
+    .git,
+    .venv,
+    __pycache__,
+    .pytest_cache,
+    htmlcov,
+    data

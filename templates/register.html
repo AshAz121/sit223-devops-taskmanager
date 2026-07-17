@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Register | DevOps Task Manager{% endblock %}
+
+{% block content %}
+<section class="auth-card">
+    <p class="eyebrow">New account</p>
+    <h1>Create your workspace</h1>
+    <p class="muted">
+        Passwords are stored as secure hashes rather than plain text.
+    </p>
+
+    <form method="post" class="stacked-form">
+        <label for="username">Username</label>
+        <input
+            id="username"
+            name="username"
+            type="text"
+            minlength="3"
+            maxlength="50"
+            autocomplete="username"
+            required
+        >
+
+        <label for="password">Password</label>
+        <input
+            id="password"
+            name="password"
+            type="password"
+            minlength="8"
+            autocomplete="new-password"
+            required
+        >
+
+        <button class="button primary" type="submit">Create account</button>
+    </form>
+
+    <p class="form-footer">
+        Already registered?
+        <a href="{{ url_for('login') }}">Return to login</a>.
+    </p>
+</section>
+{% endblock %}

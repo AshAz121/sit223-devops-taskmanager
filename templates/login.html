@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Login | DevOps Task Manager{% endblock %}
+
+{% block content %}
+<section class="auth-card">
+    <p class="eyebrow">Secure workspace</p>
+    <h1>Welcome back</h1>
+    <p class="muted">
+        Log in to create, update and track your project tasks.
+    </p>
+
+    <form method="post" class="stacked-form">
+        <label for="username">Username</label>
+        <input
+            id="username"
+            name="username"
+            type="text"
+            maxlength="50"
+            autocomplete="username"
+            required
+        >
+
+        <label for="password">Password</label>
+        <input
+            id="password"
+            name="password"
+            type="password"
+            minlength="8"
+            autocomplete="current-password"
+            required
+        >
+
+        <button class="button primary" type="submit">Log in</button>
+    </form>
+
+    <p class="form-footer">
+        No account yet?
+        <a href="{{ url_for('register') }}">Create one here</a>.
+    </p>
+</section>
+{% endblock %}
